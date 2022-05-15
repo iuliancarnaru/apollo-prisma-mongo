@@ -10,7 +10,17 @@ generator client {
 }
 
 model Link {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   description String
   url         String
+  postedBy    User?   @relation(fields: [postedById], references: [id])
+  postedById  String?
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String @unique
+  password String
+  links    Link[]
 }

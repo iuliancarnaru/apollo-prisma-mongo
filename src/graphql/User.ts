@@ -9,7 +9,7 @@ export const User = objectType({
     t.nonNull.string("password");
     t.nonNull.list.nonNull.field("links", {
       type: "Link",
-      resolve: async ({ id }, args, { prisma }, info) => {
+      async resolve({ id }, args, { prisma }, info) {
         return prisma.user.findUnique({ where: { id } }).links();
       },
     });

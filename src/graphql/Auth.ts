@@ -23,7 +23,7 @@ export const AuthMutation = extendType({
         password: nonNull(stringArg()),
         name: nonNull(stringArg()),
       },
-      resolve: async (parent, args, { prisma }, info) => {
+      async resolve(parent, args, { prisma }, info) {
         const { email, name } = args;
 
         const password = await argon2.hash(args.password);
@@ -47,7 +47,7 @@ export const AuthMutation = extendType({
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      resolve: async (parent, { email, password }, { prisma }, info) => {
+      async resolve(parent, { email, password }, { prisma }, info) {
         const user = await prisma.user.findUnique({
           where: { email },
         });

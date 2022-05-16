@@ -17,7 +17,7 @@ export const VoteMutation = extendType({
       args: {
         linkId: nonNull(intArg()),
       },
-      resolve: async (parent, { linkId }, { prisma, userId }) => {
+      async resolve(parent, { linkId }, { prisma, userId }) {
         if (!userId) {
           throw new Error("Cannot vote without logging in.");
         }

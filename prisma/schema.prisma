@@ -1,7 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,17 +10,20 @@ generator client {
 }
 
 model Link {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
   description String
   url         String
-  postedBy    User?   @relation(fields: [postedById], references: [id])
-  postedById  String?
+  postedBy    User?    @relation(name: "PostedBy", fields: [postedById], references: [id])
+  postedById  Int?
+  voters      User[]   @relation(name: "Votes")
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       Int    @id @default(autoincrement())
   name     String
   email    String @unique
   password String
-  links    Link[]
+  links    Link[] @relation(name: "PostedBy")
+  votes    Link[] @relation(name: "Votes")
 }

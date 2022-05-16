@@ -4,13 +4,20 @@ import { extendType, nonNull, stringArg, objectType } from "nexus";
 export const Link = objectType({
   name: "Link",
   definition(t) {
-    t.nonNull.string("id");
+    t.nonNull.int("id");
     t.nonNull.string("description");
     t.nonNull.string("url");
+    t.nonNull.dateTime("createdAt");
     t.field("postedBy", {
       type: "User",
       resolve: async ({ id }, args, { prisma }, info) => {
         return prisma.link.findUnique({ where: { id } }).postedBy();
+      },
+    });
+    t.nonNull.list.nonNull.field("voters", {
+      type: "User",
+      resolve: ({ id }, args, { prisma }, info) => {
+        return prisma.link.findUnique({ where: { id } }).voters();
       },
     });
   },

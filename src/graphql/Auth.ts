@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import { extendType, objectType, nonNull, stringArg } from "nexus";
@@ -68,7 +69,7 @@ export const AuthMutation = extendType({
 
         return {
           token,
-          user,
+          user: user as User,
         };
       },
     });
